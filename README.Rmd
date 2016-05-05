@@ -1,0 +1,35 @@
+# Twitter Searcher
+
+## Introduction
+
+#### How this function works.
+
+A simple add-on to make pulling results via the TwitterR package easier and return the results in a data frame instead of a list.
+
+### Function arguments
+
+The "twitterSearch" function takes three arguments:
+- `start`, a character vector in YYYY-MM-DD format, specifying the first day when Tweets should be collected from the Twitter API. *Note that the Twitter REST API only allows searching of the past 7 days of Tweets.*
+- `end`, a character vector in YYYY-MM-DD format, specifying the final day when Tweets should be collected from the Twitter API.
+- `searchTerm`, a character vector to specify the Twitter search terms which should be applied.
+
+#### Package dependencies
+
+The function uses the dplyr, twitterR and ggplot2 packages. If you do not have these installed, enter the following code in your R console:
+
+```r
+install.packages(c("dplyr","twitterR","ggplot2"))
+```
+
+## Function output
+
+The function returns a data frame with 2 columns:
+- "Tweet" - the text of each tweet which matched the search.
+- "Date" - the created date of each tweet.
+- "Count" - the number 1 for each tweet, to allow daily tweet quantities to be counted.
+
+Outside the function, placeholder code is provided to group the results by date and append a "totalTweets" column: the sum of the number of Tweets for each day.
+
+## API limits
+
+Note that the Twitter API has a limit on the number of daily Tweets it can return. For searches with high-volume results, you may collect a subset of results only - do not rely on the totalTweets column in this case.

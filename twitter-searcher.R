@@ -11,7 +11,7 @@ twitterSearch<-function(start=as.character(Sys.Date()-7), end=as.character(Sys.D
   currentDay<-startDate
   fullResults<-NULL
   for ( day in 1:numDays ) {
-    dayResults<-searchTwitter(searchTerm, since=as.character(currentDay), until=as.character(currentDay+1), n=1500)
+    dayResults<-searchTwitter(searchTerm, since=as.character(currentDay), until=as.character(currentDay+1), n=9999)
     dayResults.df<-NULL
     for ( tweet in 1:length(dayResults) ) {
       tweetText<-dayResults[[tweet]]$text # get the tweet text
