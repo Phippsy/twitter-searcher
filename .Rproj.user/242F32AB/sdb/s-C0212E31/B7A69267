@@ -1,0 +1,17 @@
+{
+    "contents" : "library(twitteR)\nlibrary(dplyr)\nlibrary(ggplot2)\nsource(\"twitter-auth.r\")\n\n# Function to split search request into daily chunks, to circumvent Twitter API rate limits\ntwitterSearch<-function(startDate, endDate, searchTerm) {\n  startDate<-as.Date(startDate)\n  endDate<-as.Date(endDate)\n  numDays<-endDate-startDate\n  currentDay<-startDate\n  fullResults<-NULL\n  for ( day in 1:numDays ) {\n    dayResults<-searchTwitter(searchTerm, since=as.character(currentDay), until=as.character(currentDay+1))\n    dayResults.df<-NULL\n    for ( tweet in 1:length(dayResults) ) {\n      tweetText<-dayResults[[tweet]]$text # get the tweet text\n      tweetDate<-dayResults[[tweet]]$created # get the tweet created date\n      loop.df<-data.frame(tweet=character(1), date=as.Date(\"2015-01-01\")) # initialise empty df\n      loop.df$tweet<-as.character(loop.df$tweet)\n      loop.df[1,1]<-tweetText\n      loop.df[1,2]<-tweetDate\n      loop.df$count<-1\n      dayResults.df<-rbind(dayResults.df, loop.df)\n    }\n    currentDay<-currentDay+1\n    fullResults<-rbind(fullResults, dayResults.df)\n  }\n  fullResults\n}\n\n# Run the twitter search for the #likeagirl hashtag. You can use + to separate query terms.\nalways<-searchTwitter(\"#likeagirl\", n=1588, since='2016-04-01')\n\n# Join the results from the \"always\" list into a data frame\nalways.df<-NULL\nfor ( tweet in 1:length(always)) {\n  tweetText<-always[[tweet]]$text # get the tweet text\n  tweetDate<-always[[tweet]]$created # get the tweet created date\n  loop.df<-data.frame(tweet=character(1), date=as.Date(\"2015-01-01\")) # initialise empty df\n  loop.df$tweet<-as.character(loop.df$tweet)\n  loop.df[1,1]<-tweetText\n  loop.df[1,2]<-tweetDate\n  loop.df$count<-1\n  always.df<-rbind(always.df, loop.df)\n}\n\nrm(list=c(\"loop.df\"))\n\n# summarise the tweets by day and sum the tweet count for each day\nalways.df2<-always.df %>% group_by(date) %>% summarise (totalTweets = sum(count))\n\n# quick plot of daily tweets matching the search\nggplot(always.df2, aes(x=date, y=totalTweets)) + geom_line()",
+    "created" : 1462441300155.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "670777148",
+    "id" : "B7A69267",
+    "lastKnownWriteTime" : 1462440884,
+    "path" : "~/Dropbox/3-Work/Training/Software stuff/Coding/R/JLRDX GA/Queries run/twitter-searcher/twitter-searcher.R",
+    "project_path" : "twitter-searcher.R",
+    "properties" : {
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

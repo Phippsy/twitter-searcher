@@ -1,0 +1,17 @@
+{
+    "contents" : "api_key<- \"0nPQSRwiOqYSkZmkye4duJmDj\"\napi_secret<- \"3G9yhWw2m35ijgyor9wNXjVUK2832OcY1OHKS9foKhGmnbDCIb\"\naccess_token <- \"26742002-VsGJNvfAWDtfKpbuE7pQeRmHpzRtHSYSIs0FWaBqX\"\n\naccess_token_secret <- \"SsdoyDXBrZAVLVuXGDC9VGmPuLCkLupRZBIlvocdVe34C\"\nsetup_twitter_oauth(api_key,api_secret,access_token,access_token_secret)",
+    "created" : 1462436962597.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1110085267",
+    "id" : "15C12DC0",
+    "lastKnownWriteTime" : 1456306936,
+    "path" : "~/Dropbox/3-Work/Training/Software stuff/Coding/R/JLRDX GA/Queries run/always-likeagirl/twitter-auth.R",
+    "project_path" : "twitter-auth.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
