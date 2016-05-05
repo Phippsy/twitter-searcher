@@ -4,14 +4,14 @@ library(ggplot2)
 source("twitter-auth.r")
 
 # Function to split search request into daily chunks, to circumvent Twitter API rate limits
-twitterSearch<-function(startDate, endDate, searchTerm) {
-  startDate<-as.Date(startDate)
-  endDate<-as.Date(endDate)
+twitterSearch<-function(start=as.character(Sys.Date()-7), end=as.character(Sys.Date()), searchTerm) {
+  startDate<-as.Date(start)
+  endDate<-as.Date(end)
   numDays<-endDate-startDate
   currentDay<-startDate
   fullResults<-NULL
   for ( day in 1:numDays ) {
-    dayResults<-searchTwitter(searchTerm, since=as.character(currentDay), until=as.character(currentDay+1))
+    dayResults<-searchTwitter(searchTerm, since=as.character(currentDay), until=as.character(currentDay+1), n=1500)
     dayResults.df<-NULL
     for ( tweet in 1:length(dayResults) ) {
       tweetText<-dayResults[[tweet]]$text # get the tweet text
@@ -29,26 +29,10 @@ twitterSearch<-function(startDate, endDate, searchTerm) {
   fullResults
 }
 
-# Run the twitter search for the #likeagirl hashtag. You can use + to separate query terms.
-always<-searchTwitter("#likeagirl", n=1588, since='2016-04-01')
-
-# Join the results from the "always" list into a data frame
-always.df<-NULL
-for ( tweet in 1:length(always)) {
-  tweetText<-always[[tweet]]$text # get the tweet text
-  tweetDate<-always[[tweet]]$created # get the tweet created date
-  loop.df<-data.frame(tweet=character(1), date=as.Date("2015-01-01")) # initialise empty df
-  loop.df$tweet<-as.character(loop.df$tweet)
-  loop.df[1,1]<-tweetText
-  loop.df[1,2]<-tweetDate
-  loop.df$count<-1
-  always.df<-rbind(always.df, loop.df)
-}
-
-rm(list=c("loop.df"))
+mysearch<-twitterSearch(searchTerm="jaguar")
 
 # summarise the tweets by day and sum the tweet count for each day
-always.df2<-always.df %>% group_by(date) %>% summarise (totalTweets = sum(count))
+fullResults.bydate<-mysearch %>% group_by(date) %>% summarise (totalTweets = sum(count))
 
 # quick plot of daily tweets matching the search
-ggplot(always.df2, aes(x=date, y=totalTweets)) + geom_line()
+ggplot(fullResults.bydate, aes(x=date, y=totalTweets)) + geom_line()
